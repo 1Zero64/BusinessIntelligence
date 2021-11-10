@@ -14,12 +14,6 @@ jobs:
         with:
           java-version: 1.11
 
-      - name: maven-settings-xml-action
-        uses: whelk-io/maven-settings-xml-action@v14
-        with:
-          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2", "releases": { "enabled": "true" }, "snapshots": { "enabled": "true" } }, { "id": "github", "name": "GitHub Dravelopsdatamodel Apache Maven Packages", "url": "https://maven.pkg.github.com/blackforestsolutions/dravelopsdatamodel" }]'
-          servers: '[{ "id": "github", "username": "blackforestsolutions", "password": "68677d6efb027a7ec6ab172c20381fc53fa8d5c3" }]'
-
       - uses: actions/cache@v1
         with:
           path: ~/.m2/repository
