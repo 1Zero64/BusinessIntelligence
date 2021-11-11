@@ -23,17 +23,17 @@ Niko Kauz
 ## Anforderung an die Präsentationen
 - Präsentationsdauer
 - Min 10 min und max5 min pro Person(wird ggf. noch verlängert)
-- Gruppengröße max6. (bei Felix eintragen)
-- Einzelbewertung möglich: im Vorfeld dazu melden
+- Gruppengröße max 6. (bei Felix eintragen)
+- Einzelbewertung möglich: im Vorfeld dazu melden
 - Durch die Analysen gewonnene Erkenntnisse werden vorgestellt und interpretiert
 - Fiktive Zielgruppe: Vorstand (CEO/CTO) von E-above
-- --> Implikation auf das Geschäft von E-Above berücksichtigen\ 
+- --> Implikation auf das Geschäft von E-Above berücksichtigen 
 - Implementierte Lösung wird erläutert und ggf. demonstriert
-- Fiktive Zielgruppe CTO/BI-Abteilung von E-above\
+- Fiktive Zielgruppe CTO/BI-Abteilung von E-above
 - Technische Konzepte der Lösung werden erläutert
 - Z.B. Architekturdiagramme, Algorithmen
 - Fiktive Zielgruppe BI-Abteilung E-above
-- Code+Folienabgeben\
+- Code+Folienabgeben
 - Timing!
 - Abdeckung der geforderten Inhalte
 - Inhaltliche Reflektion der Ergebnisse
