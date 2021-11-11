@@ -71,7 +71,7 @@ Spark, Scala und Java
 umzusetzen.
 - Die Berechnungen sollen nach Möglichkeit in Spark umgesetzt werden.
 
-## Q1
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q1
 Wie viel verdienen Taxis pro fahrt, wenn sie nur 30km bzw. 50km pro Fahrt fahren können,
 im Vergleich zu Taxis die keine Begrenzung haben? (D.h. was sind die durchschnittlichen
 Einnahmen mit Fahrten <30km bzw. <50km im Vergleich zu den Gesamteinnahmen?).
@@ -85,7 +85,7 @@ WIP
 ### Output
 WIP
 
-## Q2
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q2
 Finden Sie heraus, ob mehr Taxifahrten im Norden oder im Süden gestartet werden.
 
 ## Umsetzung
@@ -97,7 +97,7 @@ WIP
 ### Output
 WIP
 
-## Q3
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q3
 Gib mir Informationen über die Durchschnittsgeschwindigkeit des Verkehrs in
 New York.
 
@@ -113,7 +113,7 @@ WIP
 ### Output
 WIP
 
-## Q4
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q4
 Ermittle den durchschnittlichen Tagesverlauf der durchschnittlichen
 Verkehrsgeschwindigkeit in New York.
 
@@ -126,7 +126,7 @@ WIP
 ### Output
 WIP
 
-## Q5
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q5
 Ermittle den durchschnittlichen Tagesverlauf des durchschnittlichen Verkehrsvolumens (gemessen an Taxifahrten) in New York.
 
 ## Umsetzung
@@ -138,7 +138,7 @@ WIP
 ### Output
 WIP
 
-## Q6
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q6
 Ermittle ob und wie das Trinkgeld von der Uhrzeit abhängt.
 
 ## Umsetzung
@@ -150,7 +150,7 @@ WIP
 ### Output
 WIP
 
-## Q7
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q7
 Ermittle ob und wie das Trinkgeld von der Fahrtdistanz abhängt.
 
 ## Umsetzung
@@ -162,7 +162,7 @@ WIP
 ### Output
 WIP
 
-## Q8
+## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q8
 Ermittle ob und wie das Trinkgeld von der Fahrtdauer abhängt.
 
 ## Umsetzung

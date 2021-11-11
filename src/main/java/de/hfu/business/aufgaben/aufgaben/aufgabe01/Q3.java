@@ -1,16 +1,10 @@
-import org.apache.spark.api.java.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
+package de.hfu.business.aufgaben.aufgaben.aufgabe01;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import de.hfu.business.aufgaben.utility.DoubleRounder;
+import org.apache.spark.api.java.*;
+
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.Function2;
-import org.codehaus.janino.Java;
 import org.apache.spark.api.java.function.DoubleFunction;
-import org.apache.spark.api.java.function.FlatMapFunction;
 
 public class Q3 {
 

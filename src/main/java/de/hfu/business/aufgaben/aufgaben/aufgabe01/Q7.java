@@ -1,3 +1,5 @@
+package de.hfu.business.aufgaben.aufgaben.aufgabe01;
+
 import org.apache.spark.api.java.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +14,7 @@ import org.codehaus.janino.Java;
 import org.apache.spark.api.java.function.DoubleFunction;
 import org.apache.spark.api.java.function.FlatMapFunction;
 
-public class Q6 {
+public class Q7 {
 
 	public static void main(String[] args) {
 
