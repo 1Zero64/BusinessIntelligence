@@ -12,15 +12,6 @@ import org.codehaus.janino.Java;
 import org.apache.spark.api.java.function.DoubleFunction;
 import org.apache.spark.api.java.function.FlatMapFunction;
 
-/**
- * Average total amount for 30 km and under: 14.2621
-Average total amount for 50 km and under: 14.2934
-Average total amount for all drives: 14.2944
- * @author osboxes
- *
- */
-
-
 public class Q1 {
 
 	static DataCleaner dataCleaner = new DataCleaner();
