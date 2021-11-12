@@ -1,3 +1,5 @@
+package de.hfu.business.aufgaben.utility;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
