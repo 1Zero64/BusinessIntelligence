@@ -3,6 +3,7 @@ package de.hfu.businessintelligence.service.mapper;
 import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SaveMode;
 import org.apache.spark.sql.SparkSession;
 import scala.collection.JavaConversions;
 import scala.collection.Seq;
@@ -14,8 +15,8 @@ import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class TripMapperService {
 
-    private static final String TRIP_FARE_DIRECTORY = "C:\\businessintelligence\\trip_fare";
-    private static final String TRIP_DATA_DIRECTORY = "C:\\businessintelligence\\trip_data";
+    private static final String TRIP_FARE_DIRECTORY = "/home/hennihaus/businessintelligence/trip_fare_test";
+    private static final String TRIP_DATA_DIRECTORY = "/home/hennihaus/businessintelligence/trip_data_test";
 
     private volatile static TripMapperService instance;
 
@@ -46,6 +47,7 @@ public class TripMapperService {
 
         Dataset<Row> trips = tripData.join(tripFares, getKeyColumns());
         trips.createOrReplaceTempView(TRIPS_TABLE);
+        trips.write().mode(SaveMode.Overwrite).saveAsTable(TRIPS_TABLE);
         return trips;
     }
 

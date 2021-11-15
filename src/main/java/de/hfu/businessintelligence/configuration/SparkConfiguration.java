@@ -1,13 +1,12 @@
 package de.hfu.businessintelligence.configuration;
 
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
 
 public class SparkConfiguration {
 
-    private static final String CLUSTER_URL = "local";
     private static final String APP_NAME = "BusinessIntelligence";
+    private static final String THRIFT_SERVER_PORT_CONFIG_PROP = "hive.server2.thrift.port";
+    private static final String THRIFT_SERVER_PORT = "10000";
 
     private static final SparkConfiguration instance = new SparkConfiguration();
 
@@ -21,18 +20,9 @@ public class SparkConfiguration {
 
     public SparkSession sparkSession() {
         return SparkSession.builder()
-                .sparkContext(sc().sc())
                 .appName(APP_NAME)
+                .config(THRIFT_SERVER_PORT_CONFIG_PROP, THRIFT_SERVER_PORT)
+                .enableHiveSupport()
                 .getOrCreate();
-    }
-
-    private JavaSparkContext sc() {
-        return new JavaSparkContext(sparkConf());
-    }
-
-    private SparkConf sparkConf() {
-        return new SparkConf()
-                .setMaster(CLUSTER_URL)
-                .setAppName(APP_NAME);
     }
 }
