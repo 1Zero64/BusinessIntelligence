@@ -1,5 +1,6 @@
 /target
 /.idea
+/bin
 /spark-warehouse
 /metastore_db
 derby.log

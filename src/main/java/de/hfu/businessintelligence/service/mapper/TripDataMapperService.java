@@ -107,7 +107,7 @@ public class TripDataMapperService implements Serializable {
 
     private Timestamp extractDateTimeFrom(String field) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_TIME_PATTERN);
             Date parsedDate = dateFormat.parse(field);
             return new Timestamp(parsedDate.getTime());
         } catch (ParseException e) {
