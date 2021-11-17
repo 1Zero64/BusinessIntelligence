@@ -9,27 +9,25 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
-import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
-import static de.hfu.businessintelligence.configuration.UnitConfiguration.SECONDS_TO_HOURS;
 
-public class FourthTaskService implements TaskService, Serializable {
+public class SixthTaskService implements TaskService, Serializable {
 
-    private static final String HOURS_COLUMN = "hour";
+    private static final String DROP_OFF_TIME_COLUMN = "dropOffTime";
     private static final String EXTRACT_HOUR_USER_DEFINED_FUNCTION = "EXTRACT_HOUR";
 
-    private volatile static FourthTaskService instance;
+    private volatile static SixthTaskService instance;
 
     private final SparkSession sparkSession;
 
-    private FourthTaskService(SparkSession sparkSession) {
+    private SixthTaskService(SparkSession sparkSession) {
         this.sparkSession = sparkSession;
     }
 
-    public static FourthTaskService getInstance(SparkSession sparkSession) {
+    public static SixthTaskService getInstance(SparkSession sparkSession) {
         if (Optional.ofNullable(instance).isEmpty()) {
-            synchronized (FourthTaskService.class) {
+            synchronized (SixthTaskService.class) {
                 if (Optional.ofNullable(instance).isEmpty()) {
-                    instance = new FourthTaskService(sparkSession);
+                    instance = new SixthTaskService(sparkSession);
                 }
             }
         }
@@ -38,10 +36,10 @@ public class FourthTaskService implements TaskService, Serializable {
 
     @Override
     public void executeTask() {
-        getAvgVelocityGroupedByDayTimes().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHourGroupedByHour");
+        getAvgTipAmountsGroupedByTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByDropOffTime");
     }
 
-    private Dataset<Row> getAvgVelocityGroupedByDayTimes() {
+    private Dataset<Row> getAvgTipAmountsGroupedByTime() {
         sparkSession.udf().register(
                 EXTRACT_HOUR_USER_DEFINED_FUNCTION,
                 (UDF1<Timestamp, Integer>) this::extractHourFromDateTime,
@@ -49,31 +47,25 @@ public class FourthTaskService implements TaskService, Serializable {
         );
         String statement = buildSqlStatement();
         return sparkSession.sql(statement)
-                .sort(functions.asc(HOURS_COLUMN));
+                .sort(functions.asc(DROP_OFF_TIME_COLUMN));
     }
 
     private String buildSqlStatement() {
         return "SELECT "
                 .concat(EXTRACT_HOUR_USER_DEFINED_FUNCTION)
                 .concat("(")
-                .concat(PICKUP_DATE_TIME_COLUMN)
+                .concat(DROP_OFF_DATE_TIME_COLUMN)
                 .concat(")")
                 .concat(" as ")
-                .concat(HOURS_COLUMN)
-                .concat(", AVG((")
-                .concat(TRIP_DISTANCE_COLUMN)
-                .concat(" * ")
-                .concat(String.valueOf(MILES_TO_KILOMETERS))
-                .concat(") / (")
-                .concat(TRIP_TIME_IN_SECONDS_COLUMN)
-                .concat(" / ")
-                .concat(String.valueOf(SECONDS_TO_HOURS))
-                .concat(")) as avgVelocityInKilometersPerHour FROM ")
+                .concat(DROP_OFF_TIME_COLUMN)
+                .concat(", AVG(")
+                .concat(TIP_AMOUNT_COLUMN)
+                .concat(") as avgTipAmountInDollars FROM ")
                 .concat(TRIPS_TABLE)
                 .concat(" GROUP BY ")
                 .concat(EXTRACT_HOUR_USER_DEFINED_FUNCTION)
                 .concat("(")
-                .concat(PICKUP_DATE_TIME_COLUMN)
+                .concat(DROP_OFF_DATE_TIME_COLUMN)
                 .concat(")");
     }
 
