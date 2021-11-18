@@ -33,12 +33,12 @@ public class SecondTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        countRowsWithLatitudeGreaterOrSmallerThan(40.711109d, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInNorth");
-        countRowsWithLatitudeGreaterOrSmallerThan(40.711109d, false).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInSouth");
-        countRowsWithLatitudeGreaterOrSmallerThan(-90.1, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInTotal");
+        countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInNorth");
+        countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, false).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInSouth");
+        countTripsWithLatitudeGreaterOrSmallerThan(-90.1, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInTotal");
     }
 
-    private Dataset<Row> countRowsWithLatitudeGreaterOrSmallerThan(double latitude, boolean isGreater) {
+    private Dataset<Row> countTripsWithLatitudeGreaterOrSmallerThan(double latitude, boolean isGreater) {
         String statement = buildSqlStatementWith(latitude, isGreater);
         return sparkSession.sql(statement);
     }

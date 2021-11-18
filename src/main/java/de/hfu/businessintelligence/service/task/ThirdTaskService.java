@@ -8,6 +8,7 @@ import org.apache.spark.sql.SparkSession;
 import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
+import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.SECONDS_TO_HOURS;
 
 public class ThirdTaskService implements TaskService {
@@ -36,16 +37,17 @@ public class ThirdTaskService implements TaskService {
         getAverageVelocity().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHour");
     }
 
-    // todo map miles per hours to kilometers per hour
     private Dataset<Row> getAverageVelocity() {
         String statement = buildSqlStatement();
         return sparkSession.sql(statement);
     }
 
     private String buildSqlStatement() {
-        return "SELECT AVG("
+        return "SELECT AVG(("
                 .concat(TRIP_DISTANCE_COLUMN)
-                .concat(" / (")
+                .concat(" * ")
+                .concat(String.valueOf(MILES_TO_KILOMETERS))
+                .concat(") / (")
                 .concat(TRIP_TIME_IN_SECONDS_COLUMN)
                 .concat(" / ")
                 .concat(String.valueOf(SECONDS_TO_HOURS))
