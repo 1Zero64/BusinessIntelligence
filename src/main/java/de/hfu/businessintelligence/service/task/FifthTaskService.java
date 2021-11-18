@@ -10,8 +10,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.TableConfiguration.PICKUP_DATE_TIME_COLUMN;
+import static de.hfu.businessintelligence.configuration.TableConfiguration.TRIPS_TABLE;
+
 public class FifthTaskService implements TaskService, Serializable {
 
+    private static final String HOUR_COLUMN = "hour";
     private static final String EXTRACT_HOUR_USER_DEFINED_FUNCTION = "EXTRACT_HOUR";
     private static final String EXTRACT_DATE_TIME_WITH_HOUR_USER_DEFINED_FUNCTION = "EXTRACT_DATE_TIME_WITH_HOUR";
 
@@ -50,15 +54,29 @@ public class FifthTaskService implements TaskService, Serializable {
                 (UDF1<Timestamp, Timestamp>) this::extractDateTimeWithOnlyHoursFromDateTime,
                 DataTypes.TimestampType
         );
-        return sparkSession.sql("WITH newTrips as (SELECT EXTRACT_DATE_TIME_WITH_HOUR(pickUpDateTime) as dateTime, COUNT(*) as countedDrives FROM trips GROUP BY EXTRACT_DATE_TIME_WITH_HOUR(pickUpDateTime)) SELECT EXTRACT_HOUR(dateTime) AS hour, AVG(countedDrives) AS avgCountedDrives FROM newTrips GROUP BY EXTRACT_HOUR(dateTime)")
-                .sort(functions.asc("hour"))
+        String statement = buildSqlStatement();
+        return sparkSession.sql(statement)
+                .sort(functions.asc(HOUR_COLUMN));
     }
 
-    // WITH help as (SELECT age FROM persons)
-    // SELECT * FROM help
-
-    private String buildSqlStatementForCountingTripsGroupedByDateTime() {
-        return null;
+    private String buildSqlStatement() {
+        return "WITH newTrips as (SELECT "
+                .concat(EXTRACT_DATE_TIME_WITH_HOUR_USER_DEFINED_FUNCTION)
+                .concat("(")
+                .concat(PICKUP_DATE_TIME_COLUMN)
+                .concat(") as dateTime, COUNT(*) as countedDrives FROM ")
+                .concat(TRIPS_TABLE)
+                .concat(" GROUP BY ")
+                .concat(EXTRACT_DATE_TIME_WITH_HOUR_USER_DEFINED_FUNCTION)
+                .concat("(")
+                .concat(PICKUP_DATE_TIME_COLUMN)
+                .concat(")) SELECT ")
+                .concat(EXTRACT_HOUR_USER_DEFINED_FUNCTION)
+                .concat("(dateTime) as ")
+                .concat(HOUR_COLUMN)
+                .concat(", AVG(countedDrives) as avgCountedDrives FROM newTrips GROUP BY ")
+                .concat(EXTRACT_HOUR_USER_DEFINED_FUNCTION)
+                .concat("(dateTime)");
     }
 
     private Integer extractHourFromDateTime(Timestamp timestamp) {
