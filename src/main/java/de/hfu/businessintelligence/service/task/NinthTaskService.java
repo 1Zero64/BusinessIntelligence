@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
@@ -7,6 +8,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.PASSENGER_COUNT_COLUMN;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.TRIPS_TABLE;
 
@@ -33,20 +35,16 @@ public class NinthTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        getAvgPassengersInTaxi().write().mode(SaveMode.Overwrite).saveAsTable("avgPassengersCount");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAvgPassengersInTaxi(), "avgPassengersCountPerTrip");
+        } else {
+            getAvgPassengersInTaxi().write().mode(SaveMode.Overwrite).saveAsTable("avgPassengersCountPerTrip");
+        }
     }
 
     private Dataset<Row> getAvgPassengersInTaxi() {
         String statement = buildAvgPassengerSqlStatement();
         return sparkSession.sql(statement);
-    }
-
-    private Dataset<Row> countSameTrips(double distanceToleranceInKilometers, long timeToleranceInSeconds) {
-        return sparkSession.sql("select * from trips");
-    }
-
-    private Dataset<Row> countTotalTrips() {
-        return sparkSession.sql("SELECT COUNT(*) FROM trips");
     }
 
     private String buildAvgPassengerSqlStatement() {

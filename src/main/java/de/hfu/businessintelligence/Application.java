@@ -24,7 +24,10 @@ public class Application {
                 FifthTaskService.getInstance(spark),
                 SixthTaskService.getInstance(spark),
                 SeventhTaskService.getInstance(spark),
-                EighthTaskService.getInstance(spark)
+                EighthTaskService.getInstance(spark),
+                NinthTaskService.getInstance(spark),
+                TenthTaskService.getInstance(spark),
+                EleventhTaskService.getInstance(spark)
         );
         tasks.forEach(TaskService::executeTask);
     }
