@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.types.DataTypes;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.SECONDS_TO_HOURS;
@@ -38,7 +40,11 @@ public class FourthTaskService implements TaskService, Serializable {
 
     @Override
     public void executeTask() {
-        getAvgVelocityGroupedByDayTimes().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHourGroupedByHour");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAvgVelocityGroupedByDayTimes(), "averageVelocityInKilometersPerHourGroupedByHour");
+        } else {
+            getAvgVelocityGroupedByDayTimes().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHourGroupedByHour");
+        }
     }
 
     private Dataset<Row> getAvgVelocityGroupedByDayTimes() {

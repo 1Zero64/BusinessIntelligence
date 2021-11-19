@@ -1,9 +1,11 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class EighthTaskService implements TaskService {
@@ -29,7 +31,11 @@ public class EighthTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        getAvgTipAmountGroupedByTripTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripTimeInSeconds");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupedByTripTime(), "avgTipAmountInDollarsGroupedByTripTimeInSeconds");
+        } else {
+            getAvgTipAmountGroupedByTripTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripTimeInSeconds");
+        }
     }
 
     private Dataset<Row> getAvgTipAmountGroupedByTripTime() {

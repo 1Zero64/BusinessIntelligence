@@ -11,8 +11,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.*;
 
@@ -60,7 +63,7 @@ public class TripDataMapperService implements Serializable {
         JavaRDD<String> lines = extractLineRddFrom(filePaths);
         if (hasHeader) {
             String header = lines.first();
-            return lines.filter(line -> !line.equals(header))
+            return lines.filter(line -> !isHeader(header, line))
                     .map(line -> line.split(CSV_SEPARATOR))
                     .filter(this::filterFields)
                     .map(this::extractTripDataFromFields);
@@ -74,6 +77,15 @@ public class TripDataMapperService implements Serializable {
         return sparkSession.read()
                 .textFile(filePaths)
                 .javaRDD();
+    }
+
+    private boolean isHeader(String header, String line) {
+        List<String> fields = Arrays.stream(line.split(CSV_SEPARATOR)).map(String::trim).collect(Collectors.toList());
+        List<String> headers = Arrays.stream(header.split(CSV_SEPARATOR)).map(String::trim).collect(Collectors.toList());
+        if (fields.containsAll(headers)) {
+            log.warn("Line: ".concat(line).concat(" is header!"));
+        }
+        return fields.containsAll(headers);
     }
 
     private boolean filterFields(String[] fields) {

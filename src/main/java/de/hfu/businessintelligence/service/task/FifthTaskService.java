@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.types.DataTypes;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.PICKUP_DATE_TIME_COLUMN;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.TRIPS_TABLE;
 
@@ -40,7 +42,11 @@ public class FifthTaskService implements TaskService, Serializable {
 
     @Override
     public void executeTask() {
-        avgTripsGroupedByHours().write().mode(SaveMode.Overwrite).saveAsTable("avgCountedTripsGroupedByHours");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(avgTripsGroupedByHours(), "avgCountedTripsGroupedByHours");
+        } else {
+            avgTripsGroupedByHours().write().mode(SaveMode.Overwrite).saveAsTable("avgCountedTripsGroupedByHours");
+        }
     }
 
     private Dataset<Row> avgTripsGroupedByHours() {

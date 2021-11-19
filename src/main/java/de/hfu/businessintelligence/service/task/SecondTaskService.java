@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
@@ -7,6 +8,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.PICK_UP_LATITUDE_COLUMN;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.TRIPS_TABLE;
 
@@ -33,9 +35,15 @@ public class SecondTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInNorth");
-        countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, false).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInSouth");
-        countTripsWithLatitudeGreaterOrSmallerThan(-90.1, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInTotal");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, true), "countedTripsInNorth");
+            FileService.getInstance().saveAsCsvFile(countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, false), "countedTripsInSouth");
+            FileService.getInstance().saveAsCsvFile(countTripsWithLatitudeGreaterOrSmallerThan(-90.1, true), "countedTripsInTotal");
+        } else {
+            countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInNorth");
+            countTripsWithLatitudeGreaterOrSmallerThan(40.711109d, false).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInSouth");
+            countTripsWithLatitudeGreaterOrSmallerThan(-90.1, true).write().mode(SaveMode.Overwrite).saveAsTable("countedTripsInTotal");
+        }
     }
 
     private Dataset<Row> countTripsWithLatitudeGreaterOrSmallerThan(double latitude, boolean isGreater) {

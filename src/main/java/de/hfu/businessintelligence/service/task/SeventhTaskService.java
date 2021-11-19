@@ -1,9 +1,11 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
 
@@ -30,7 +32,11 @@ public class SeventhTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        getAvgTipAmountGroupedByTripDistance().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripDistanceInKilometers");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupedByTripDistance(), "avgTipAmountInDollarsGroupedByTripDistanceInKilometers");
+        } else {
+            getAvgTipAmountGroupedByTripDistance().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripDistanceInKilometers");
+        }
     }
 
     private Dataset<Row> getAvgTipAmountGroupedByTripDistance() {

@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
 import org.apache.spark.sql.api.java.UDF1;
 import org.apache.spark.sql.types.DataTypes;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class SixthTaskService implements TaskService, Serializable {
@@ -36,7 +38,11 @@ public class SixthTaskService implements TaskService, Serializable {
 
     @Override
     public void executeTask() {
-        getAvgTipAmountsGroupedByTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByDropOffTime");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountsGroupedByTime(), "avgTipAmountInDollarsGroupedByDropOffTime");
+        } else {
+            getAvgTipAmountsGroupedByTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByDropOffTime");
+        }
     }
 
     private Dataset<Row> getAvgTipAmountsGroupedByTime() {

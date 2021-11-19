@@ -1,5 +1,6 @@
 package de.hfu.businessintelligence.service.task;
 
+import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SaveMode;
@@ -7,6 +8,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
 import static de.hfu.businessintelligence.configuration.UnitConfiguration.SECONDS_TO_HOURS;
@@ -34,7 +36,11 @@ public class ThirdTaskService implements TaskService {
 
     @Override
     public void executeTask() {
-        getAverageVelocity().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHour");
+        if (USE_CSV_OUTPUT) {
+            FileService.getInstance().saveAsCsvFile(getAverageVelocity(), "averageVelocityInKilometersPerHour");
+        } else {
+            getAverageVelocity().write().mode(SaveMode.Overwrite).saveAsTable("averageVelocityInKilometersPerHour");
+        }
     }
 
     private Dataset<Row> getAverageVelocity() {

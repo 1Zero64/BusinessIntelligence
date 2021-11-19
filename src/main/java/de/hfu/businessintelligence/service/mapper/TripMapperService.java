@@ -10,12 +10,11 @@ import scala.collection.Seq;
 import java.util.List;
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.TRIP_DATA_DIRECTORY;
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.TRIP_FARE_DIRECTORY;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class TripMapperService {
-
-    private static final String TRIP_FARE_DIRECTORY = "C:\\businessintelligence\\trip_fare_test";
-    private static final String TRIP_DATA_DIRECTORY = "C:\\businessintelligence\\trip_data_test";
 
     private volatile static TripMapperService instance;
 
