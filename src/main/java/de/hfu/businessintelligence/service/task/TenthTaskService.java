@@ -49,11 +49,11 @@ public class TenthTaskService implements TaskService {
     private String buildSqlStatement() {
         return "SELECT ROUND("
                 .concat(DROP_OFF_LATITUDE_COLUMN)
-                .concat(", 4) as ")
+                .concat(", 6) as ")
                 .concat(DROP_OFF_LATITUDE_COLUMN)
                 .concat(", ROUND(")
                 .concat(DROP_OFF_LONGITUDE_COLUMN)
-                .concat(", 4) as ")
+                .concat(", 6) as ")
                 .concat(DROP_OFF_LONGITUDE_COLUMN)
                 .concat(", COUNT(*) as tripsCount FROM ")
                 .concat(TRIPS_TABLE)
