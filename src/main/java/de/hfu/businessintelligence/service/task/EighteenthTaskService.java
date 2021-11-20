@@ -35,9 +35,9 @@ public class EighteenthTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getAvgTotalAmountPerPersonGroupedByPassengerCount(), "getAvgTotalAmountInDollarPerPersonGroupedByPassengerCount");
+            FileService.getInstance().saveAsCsvFile(getAvgTotalAmountPerPersonGroupedByPassengerCount(), "avgTotalAmountInDollarPerPersonGroupedByPassengerCount");
         } else {
-            getAvgTotalAmountPerPersonGroupedByPassengerCount().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTotalAmountInDollarPerPersonGroupedByPassengerCount");
+            getAvgTotalAmountPerPersonGroupedByPassengerCount().write().mode(SaveMode.Overwrite).saveAsTable("avgTotalAmountInDollarPerPersonGroupedByPassengerCount");
         }
     }
 

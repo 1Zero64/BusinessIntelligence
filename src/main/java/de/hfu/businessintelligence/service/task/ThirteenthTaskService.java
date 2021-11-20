@@ -35,11 +35,11 @@ public class ThirteenthTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupByPaymentType(), "getAvgTipAmountInDollarsGroupByPaymentType");
-            FileService.getInstance().saveAsCsvFile(getAvgTotalAmountGroupByPaymentType(), "getAvgTotalAmountInDollarsGroupByPaymentType");
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupByPaymentType(), "avgTipAmountInDollarsGroupByPaymentType");
+            FileService.getInstance().saveAsCsvFile(getAvgTotalAmountGroupByPaymentType(), "avgTotalAmountInDollarsGroupByPaymentType");
         } else {
-            getAvgTipAmountGroupByPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTipAmountInDollarsInDollarsGroupByPaymentType");
-            getAvgTotalAmountGroupByPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTotalAmountInDollarsGroupByPaymentType");
+            getAvgTipAmountGroupByPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsInDollarsGroupByPaymentType");
+            getAvgTotalAmountGroupByPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("avgTotalAmountInDollarsGroupByPaymentType");
         }
     }
 
