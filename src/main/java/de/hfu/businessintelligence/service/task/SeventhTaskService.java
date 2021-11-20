@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
-import static de.hfu.businessintelligence.configuration.UnitConfiguration.MILES_TO_KILOMETERS;
 
 public class SeventhTaskService implements TaskService {
 
@@ -42,25 +41,21 @@ public class SeventhTaskService implements TaskService {
     private Dataset<Row> getAvgTipAmountGroupedByTripDistance() {
         String statement = buildSqlStatement();
         return sparkSession.sql(statement)
-                .sort(functions.asc(TRIP_DISTANCE_COLUMN));
+                .sort(functions.asc("tripDistanceInKilometers"));
     }
 
     private String buildSqlStatement() {
-        return "SELECT ROUND("
+        return "WITH newTrips as (SELECT ROUND("
                 .concat(TRIP_DISTANCE_COLUMN)
-                .concat(" * ")
-                .concat(String.valueOf(MILES_TO_KILOMETERS))
-                .concat(", 0) as ")
-                .concat(TRIP_DISTANCE_COLUMN)
-                .concat(", AVG(")
+                .concat(" * 1.60934, 0) as tripDistanceInKilometers, AVG(")
                 .concat(TIP_AMOUNT_COLUMN)
                 .concat(") as avgTipAmountInDollars")
                 .concat(" FROM ")
                 .concat(TRIPS_TABLE)
-                .concat(" GROUP BY ROUND(")
-                .concat(TRIP_DISTANCE_COLUMN)
-                .concat(" * ")
-                .concat(String.valueOf(MILES_TO_KILOMETERS))
-                .concat(", 0)");
+                .concat(" GROUP BY tripDistanceInKilometers)")
+                .concat(" SELECT ")
+                .concat("tripDistanceInKilometers, avgTipAmountInDollars, (avgTipAmountInDollars / tripDistanceInKilometers) as avgTipPerKilometer")
+                .concat(" FROM ")
+                .concat("newTrips");
     }
 }

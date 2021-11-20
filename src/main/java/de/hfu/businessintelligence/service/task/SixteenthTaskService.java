@@ -32,6 +32,7 @@ public class SixteenthTaskService implements TaskService {
         return instance;
     }
 
+    @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
             FileService.getInstance().saveAsCsvFile(getCountedUnknownTripsPerVendor(), "countedUnknownTripsPerVendor");
@@ -46,18 +47,18 @@ public class SixteenthTaskService implements TaskService {
     }
 
     private String buildStatement() {
-        // SELECT vendorID as vendor, COUNT(*) as countedUnknownTrips FROM trips WHERE paymentType = 'UNK' GROUP BY vendor ORDER BY countedUnknownTrips DESC;
         return "SELECT "
                 .concat(VENDOR_ID_COLUMN)
-                .concat(" as vendor, COUNT(*) as countedUnknownTrips")
+                .concat(", SUM(CASE WHEN ")
+                .concat(PAYMENT_TYPE_COLUMN)
+                .concat(" = 'UNK' THEN 1 ELSE 0 END) as countedUnknownTrips, SUM(CASE WHEN ")
+                .concat(PAYMENT_TYPE_COLUMN)
+                .concat(" <> 'UNK' THEN 1 ELSE 0 END) as countedKnownTrips")
                 .concat(" FROM ")
                 .concat(TRIPS_TABLE)
-                .concat(" WHERE ")
-                .concat(PAYMENT_TYPE_COLUMN)
-                .concat(" = 'UNK'")
                 .concat(" GROUP BY ")
-                .concat("vendor")
+                .concat(VENDOR_ID_COLUMN)
                 .concat(" ORDER BY ")
-                .concat("countedUnknownTrips DESC");
+                .concat("countedUnknownTrips");
     }
 }

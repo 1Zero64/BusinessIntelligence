@@ -8,6 +8,7 @@ import org.apache.spark.sql.SparkSession;
 
 import java.util.Optional;
 
+import static de.hfu.businessintelligence.configuration.CsvConfiguration.FRACTION_COEFFICIENT;
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
@@ -32,6 +33,7 @@ public class FifteenthTaskService implements TaskService {
         return instance;
     }
 
+    @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
             FileService.getInstance().saveAsCsvFile(getCoordinatesWhereNoConnection(), "coordinatesWhereNoConnection");
@@ -42,26 +44,21 @@ public class FifteenthTaskService implements TaskService {
 
     private Dataset<Row> getCoordinatesWhereNoConnection() {
         String statement = buildStatement();
-        return sparkSession.sql(statement);
+        return sparkSession.sql(statement)
+                .sample(FRACTION_COEFFICIENT);
     }
 
     private String buildStatement() {
-        // SELECT dropOffLatitude, dropOffLongitude, paymentType, store_fwd_flag FROM trips WHERE store_fwd_flag = 'Y' AND paymentType = 'UNK';
         return "SELECT "
                 .concat(DROP_OFF_LATITUDE_COLUMN)
                 .concat(", ")
                 .concat(DROP_OFF_LONGITUDE_COLUMN)
-                .concat(", ")
-                .concat(PAYMENT_TYPE_COLUMN)
                 .concat(", ")
                 .concat(STORE_AND_FWD_FLAG_COLUMN)
                 .concat(" FROM ")
                 .concat(TRIPS_TABLE)
                 .concat(" WHERE ")
                 .concat(STORE_AND_FWD_FLAG_COLUMN)
-                .concat(" = 'Y'")
-                .concat(" AND ")
-                .concat(PAYMENT_TYPE_COLUMN)
-                .concat(" = 'UNK'");
+                .concat(" = 'Y'");
     }
 }

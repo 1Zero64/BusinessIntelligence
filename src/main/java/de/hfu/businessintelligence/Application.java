@@ -30,6 +30,9 @@ public class Application {
                 EleventhTaskService.getInstance(spark),
                 TwelfthTaskService.getInstance(spark),
                 ThirteenthTaskService.getInstance(spark),
+                FifteenthTaskService.getInstance(spark),
+                SixteenthTaskService.getInstance(spark),
+                SeventeenthTaskService.getInstance(spark),
                 EighteenthTaskService.getInstance(spark)
         );
         tasks.forEach(TaskService::executeTask);
