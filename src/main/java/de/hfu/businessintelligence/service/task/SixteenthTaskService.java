@@ -11,52 +11,53 @@ import java.util.Optional;
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
 import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
-public class FourteenthTaskService implements TaskService {
+public class SixteenthTaskService implements TaskService {
 
-    private volatile static FourteenthTaskService instance;
+    private volatile static SixteenthTaskService instance;
 
     private final SparkSession sparkSession;
 
-    private FourteenthTaskService(SparkSession sparkSession) {
+    private SixteenthTaskService(SparkSession sparkSession) {
         this.sparkSession = sparkSession;
     }
 
-    public static FourteenthTaskService getInstance(SparkSession sparkSession) {
+    public static SixteenthTaskService getInstance(SparkSession sparkSession) {
         if (Optional.ofNullable(instance).isEmpty()) {
-            synchronized (FourteenthTaskService.class) {
+            synchronized (SixteenthTaskService.class) {
                 if (Optional.ofNullable(instance).isEmpty()) {
-                    instance = new FourteenthTaskService(sparkSession);
+                    instance = new SixteenthTaskService(sparkSession);
                 }
             }
         }
         return instance;
     }
 
-    @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getCountedUnknownTripsPerFlag(), "countedUnknownTripsPerFlag");
+            FileService.getInstance().saveAsCsvFile(getCountedUnknownTripsPerVendor(), "countedUnknownTripsPerVendor");
         } else {
-            getCountedUnknownTripsPerFlag().write().mode(SaveMode.Overwrite).saveAsTable("countedUnknownTripsPerFlag");
+            getCountedUnknownTripsPerVendor().write().mode(SaveMode.Overwrite).saveAsTable("countedUnknownTripsPerVendor");
         }
     }
 
-    private Dataset<Row> getCountedUnknownTripsPerFlag() {
+    private Dataset<Row> getCountedUnknownTripsPerVendor() {
         String statement = buildStatement();
         return sparkSession.sql(statement);
     }
 
     private String buildStatement() {
-        // SELECT store_fwd_flag as flag, COUNT(*) as countedUnknownTrips FROM trips WHERE paymentType = 'UNK' GROUP BY flag;
+        // SELECT vendorID as vendor, COUNT(*) as countedUnknownTrips FROM trips WHERE paymentType = 'UNK' GROUP BY vendor ORDER BY countedUnknownTrips DESC;
         return "SELECT "
-                .concat(STORE_AND_FWD_FLAG_COLUMN)
-                .concat(" as flag, COUNT(*) as countedUnknownTrips")
+                .concat(VENDOR_ID_COLUMN)
+                .concat(" as vendor, COUNT(*) as countedUnknownTrips")
                 .concat(" FROM ")
                 .concat(TRIPS_TABLE)
                 .concat(" WHERE ")
                 .concat(PAYMENT_TYPE_COLUMN)
                 .concat(" = 'UNK'")
                 .concat(" GROUP BY ")
-                .concat("flag");
+                .concat("vendor")
+                .concat(" ORDER BY ")
+                .concat("countedUnknownTrips DESC");
     }
 }
