@@ -9,8 +9,9 @@ import org.apache.spark.sql.SparkSession;
 import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
+import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
-public class EighteenthTaskService implements TaskService{
+public class EighteenthTaskService implements TaskService {
 
     private volatile static EighteenthTaskService instance;
 
@@ -31,21 +32,30 @@ public class EighteenthTaskService implements TaskService{
         return instance;
     }
 
+    @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getAvgPerPersonTotalAmountGroupByPassengerCount(), "getAvgTotalAmountInDollarsPerPersonGroupByPassengerCount");
-            FileService.getInstance().saveAsCsvFile(getAvgPerPersonTotalAmount(), "getAvgTotalAmountInDollarsGroupByPaymentType");
+            FileService.getInstance().saveAsCsvFile(getAvgTotalAmountPerPersonGroupedByPassengerCount(), "getAvgTotalAmountInDollarPerPersonGroupedByPassengerCount");
         } else {
-            getAvgPerPersonTotalAmountGroupByPassengerCount().write().mode(SaveMode.Overwrite).saveAsTable("getAvgPerPersonInDollarsTotalAmountGroupByPassengerCount");
-            getAvgPerPersonTotalAmount().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTotalAmountInDollarsGroupByPaymentType");
+            getAvgTotalAmountPerPersonGroupedByPassengerCount().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTotalAmountInDollarPerPersonGroupedByPassengerCount");
         }
     }
 
-    private Dataset<Row> getAvgPerPersonTotalAmountGroupByPassengerCount() {
-        return sparkSession.sql("Select avg(totalAmount) as AvgPerPersonTotalAmountInDollarsGroupByPassengerCount, passengerCount from trips group by passangerCount");
+    private Dataset<Row> getAvgTotalAmountPerPersonGroupedByPassengerCount() {
+        String statement = buildSqlStatement();
+        return sparkSession.sql(statement);
     }
 
-    private Dataset<Row> getAvgPerPersonTotalAmount() {
-        return sparkSession.sql("Select avg(totalAmount) as AvgPerPersonTotalAmountInDollars, passengerCount from trips");
+    private String buildSqlStatement() {
+        return "SELECT "
+                .concat(PASSENGER_COUNT_COLUMN)
+                .concat(", AVG(")
+                .concat(TOTAL_AMOUNT_COLUMN)
+                .concat(" / ")
+                .concat(PASSENGER_COUNT_COLUMN)
+                .concat(") as avgTotalAmountInDollarsPerPerson FROM ")
+                .concat(TRIPS_TABLE)
+                .concat(" GROUP BY ")
+                .concat(PASSENGER_COUNT_COLUMN);
     }
 }

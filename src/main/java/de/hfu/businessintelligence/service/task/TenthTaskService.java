@@ -1,6 +1,5 @@
 package de.hfu.businessintelligence.service.task;
 
-import de.hfu.businessintelligence.configuration.CsvConfiguration;
 import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
@@ -10,6 +9,7 @@ import org.apache.spark.sql.SparkSession;
 import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
+import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class TenthTaskService implements TaskService {
 
@@ -42,28 +42,29 @@ public class TenthTaskService implements TaskService {
     }
 
     private Dataset<Row> getTenMostVisitedPlaces() {
-        return sparkSession.sql("SELECT ROUND(dropOffLatitude, 4) as dropOffLatitudeRounded, ROUND(dropOffLongitude, 4) as dropOffLongitudeRounded, COUNT(*) as tripsCount FROM trips GROUP BY ROUND(dropOffLatitude, 4), ROUND(dropOffLongitude, 4) ORDER BY tripsCount DESC LIMIT 10");
+        String statement = buildSqlStatement();
+        return sparkSession.sql(statement);
+    }
 
-        /**
-         *   10 meiste besuchte Orte -> Koordinaten runden
-         *   "SELECT ROUND("
-         *           .concat(dropOffLatitude)
-         *           .concat(", 4 as ")
-         *           .concat(dropOffLatitude)
-         *           .concat(, ROUND(")
-         *           .concat(dropOffLongitude)
-         *           .concat(", 4) as ")
-         *           .concat(pickupLongitude)
-         *           .concat(, COUNT(*) as tripsCount")
-         *           .concat(" FROM ")
-         *           .concat(TRIPS_TABLE)
-         *           .concat(" GROUP BY ");
-         *           .concat(pickupLatitude)
-         *           .concat(", ")
-         *           .concat(pickupLongitude)
-         *           .concat(" ORDER BY ")
-         *           .concat("tripsCount DESC")
-         *           .concat(" LIMIT 10");
-         */
+    private String buildSqlStatement() {
+        return "SELECT ROUND("
+                .concat(DROP_OFF_LATITUDE_COLUMN)
+                .concat(", 4) as ")
+                .concat(DROP_OFF_LATITUDE_COLUMN)
+                .concat(", ROUND(")
+                .concat(DROP_OFF_LONGITUDE_COLUMN)
+                .concat(", 4) as ")
+                .concat(DROP_OFF_LONGITUDE_COLUMN)
+                .concat(", COUNT(*) as tripsCount FROM ")
+                .concat(TRIPS_TABLE)
+                .concat(" GROUP BY ")
+                .concat(DROP_OFF_LATITUDE_COLUMN)
+                .concat(", ")
+                .concat(DROP_OFF_LONGITUDE_COLUMN)
+                .concat(" HAVING ")
+                .concat(DROP_OFF_LATITUDE_COLUMN)
+                .concat(" <> 0 AND ")
+                .concat(DROP_OFF_LONGITUDE_COLUMN)
+                .concat(" <> 0 ORDER BY tripsCount DESC LIMIT 10");
     }
 }

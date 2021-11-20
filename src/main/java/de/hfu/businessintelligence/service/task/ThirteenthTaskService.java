@@ -9,6 +9,7 @@ import org.apache.spark.sql.SparkSession;
 import java.util.Optional;
 
 import static de.hfu.businessintelligence.configuration.CsvConfiguration.USE_CSV_OUTPUT;
+import static de.hfu.businessintelligence.configuration.TableConfiguration.*;
 
 public class ThirteenthTaskService implements TaskService {
 
@@ -34,7 +35,7 @@ public class ThirteenthTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupByPaymentType(), "getAvgTipAmountInDollarsIGroupByPaymentType");
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupByPaymentType(), "getAvgTipAmountInDollarsGroupByPaymentType");
             FileService.getInstance().saveAsCsvFile(getAvgTotalAmountGroupByPaymentType(), "getAvgTotalAmountInDollarsGroupByPaymentType");
         } else {
             getAvgTipAmountGroupByPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("getAvgTipAmountInDollarsInDollarsGroupByPaymentType");
@@ -43,10 +44,34 @@ public class ThirteenthTaskService implements TaskService {
     }
 
     private Dataset<Row> getAvgTipAmountGroupByPaymentType() {
-        return sparkSession.sql("select paymentType, avg(tipAmount) as avgTipAmountInDollars from trips group by paymentType");
+        String statement = buildAvgTipAmountPerPaymentTypeStatement();
+        return sparkSession.sql(statement);
     }
 
     private Dataset<Row> getAvgTotalAmountGroupByPaymentType() {
-        return sparkSession.sql("select paymentType, avg(totalAmount) as avgTotalAmountInDollars from trips group by paymentType");
+        String statement = buildAvgTotalAmountPerPaymentTypeStatement();
+        return sparkSession.sql(statement);
+    }
+
+    private String buildAvgTipAmountPerPaymentTypeStatement() {
+        return "SELECT "
+                .concat(PAYMENT_TYPE_COLUMN)
+                .concat(", AVG(")
+                .concat(TIP_AMOUNT_COLUMN)
+                .concat(") as avgTipAmountInDollars FROM ")
+                .concat(TRIPS_TABLE)
+                .concat(" GROUP BY ")
+                .concat(PAYMENT_TYPE_COLUMN);
+    }
+
+    private String buildAvgTotalAmountPerPaymentTypeStatement() {
+        return "SELECT "
+                .concat(PAYMENT_TYPE_COLUMN)
+                .concat(", AVG(")
+                .concat(TOTAL_AMOUNT_COLUMN)
+                .concat(") as avgTotalAmountInDollars FROM ")
+                .concat(TRIPS_TABLE)
+                .concat(" GROUP BY ")
+                .concat(PAYMENT_TYPE_COLUMN);
     }
 }

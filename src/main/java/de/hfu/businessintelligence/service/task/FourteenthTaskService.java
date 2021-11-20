@@ -25,12 +25,8 @@ public class FourteenthTaskService implements TaskService {
         return instance;
     }
 
+    @Override
     public void executeTask() {
 
     }
-
-    private Dataset<Row> getCountedTripsPerFlag {
-        return sparkSession.sql("SELECT str_fwd_flag as flag, count(*) as countedTrips FROM trips GROUP BY str_fwd_flag");
-    }
-
 }

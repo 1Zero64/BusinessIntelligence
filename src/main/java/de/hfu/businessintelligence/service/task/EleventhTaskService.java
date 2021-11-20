@@ -35,22 +35,23 @@ public class EleventhTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getCountedTripsAndTotalAmountPerPaymentType(), "countedTypeAndTotalAmountPerPaymentType");
+            FileService.getInstance().saveAsCsvFile(getCountedTripsAndTotalAmountPerPaymentType(), "countedPaymentTypeAndTotalAmountInDollarPerPaymentType");
         } else {
-            getCountedTripsAndTotalAmountPerPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("countedTypeAndTotalAmountPerPaymentType");
+            getCountedTripsAndTotalAmountPerPaymentType().write().mode(SaveMode.Overwrite).saveAsTable("countedPaymentTypeAndTotalAmountInDollarPerPaymentType");
         }
     }
 
     private Dataset<Row> getCountedTripsAndTotalAmountPerPaymentType() {
-        String statement = buildStatement();
+        String statement = buildSqlStatement();
         return sparkSession.sql(statement);
     }
 
-    private String buildStatement() {
-        return ("SELECT COUNT(*) as paymentTypeCount, SUM(")
+    private String buildSqlStatement() {
+        return "SELECT "
+                .concat(PAYMENT_TYPE_COLUMN)
+                .concat(", COUNT(*) as totalPaymentsWithPaymentType, ROUND(SUM(")
                 .concat(TOTAL_AMOUNT_COLUMN)
-                .concat(") as totalAmount")
-                .concat(" FROM ")
+                .concat("), 2) as sumTotalAmountInDollars FROM ")
                 .concat(TRIPS_TABLE)
                 .concat(" GROUP BY ")
                 .concat(PAYMENT_TYPE_COLUMN);
