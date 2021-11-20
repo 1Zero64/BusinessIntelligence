@@ -35,13 +35,13 @@ public class SixteenthTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getCountedUnknownTripsPerVendor(), "countedUnknownTripsPerVendor");
+            FileService.getInstance().saveAsCsvFile(getCountedTripsPerVendorKnwonAndUnknown(), "countedTripsPerVendorKnownAndUnknown");
         } else {
-            getCountedUnknownTripsPerVendor().write().mode(SaveMode.Overwrite).saveAsTable("countedUnknownTripsPerVendor");
+            getCountedTripsPerVendorKnwonAndUnknown().write().mode(SaveMode.Overwrite).saveAsTable("countedTripsPerVendorKnownAndUnknown");
         }
     }
 
-    private Dataset<Row> getCountedUnknownTripsPerVendor() {
+    private Dataset<Row> getCountedTripsPerVendorKnwonAndUnknown() {
         String statement = buildStatement();
         return sparkSession.sql(statement);
     }
