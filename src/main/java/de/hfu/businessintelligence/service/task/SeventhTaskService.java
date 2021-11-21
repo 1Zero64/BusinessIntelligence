@@ -45,16 +45,19 @@ public class SeventhTaskService implements TaskService {
     }
 
     private String buildSqlStatement() {
-        return "WITH newTrips as (SELECT ROUND("
+        return "WITH newTrips as (SELECT CEIL(ROUND("
                 .concat(TRIP_DISTANCE_COLUMN)
-                .concat(" * 1.60934, 0) as tripDistanceInKilometers, AVG(")
+                .concat(" * 1.60934, 0) / 5) * 5 as tripDistanceIntervalInKilometers, AVG(")
                 .concat(TIP_AMOUNT_COLUMN)
-                .concat(") as avgTipAmountInDollars")
+                .concat(") as avgTipAmount")
                 .concat(" FROM ")
                 .concat(TRIPS_TABLE)
-                .concat(" GROUP BY tripDistanceInKilometers)")
+                .concat(" GROUP BY ")
+                .concat("tripDistanceIntervalInKilometers")
+                .concat(" HAVING ")
+                .concat("tripDistanceIntervalInKilometers BETWEEN 1 AND 100)")
                 .concat(" SELECT ")
-                .concat("tripDistanceInKilometers, avgTipAmountInDollars, (avgTipAmountInDollars / tripDistanceInKilometers) as avgTipPerKilometer")
+                .concat("tripDistanceIntervalInKilometers, avgTipAmount, (avgTipAmount / tripDistanceIntervalInKilometers) as avgTipPerKilometer ")
                 .concat(" FROM ")
                 .concat("newTrips");
     }

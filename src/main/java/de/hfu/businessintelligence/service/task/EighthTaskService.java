@@ -2,6 +2,7 @@ package de.hfu.businessintelligence.service.task;
 
 import de.hfu.businessintelligence.service.support.FileService;
 import org.apache.spark.sql.*;
+import scala.collection.immutable.IntMap;
 
 import java.util.Optional;
 
@@ -32,27 +33,36 @@ public class EighthTaskService implements TaskService {
     @Override
     public void executeTask() {
         if (USE_CSV_OUTPUT) {
-            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupedByTripTime(), "avgTipAmountInDollarsGroupedByTripTimeInSeconds");
+            FileService.getInstance().saveAsCsvFile(getAvgTipAmountGroupedByTripTime(), "avgTipAmountInDollarsGroupedByTripTimeInMinutes");
         } else {
-            getAvgTipAmountGroupedByTripTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripTimeInSeconds");
+            getAvgTipAmountGroupedByTripTime().write().mode(SaveMode.Overwrite).saveAsTable("avgTipAmountInDollarsGroupedByTripTimeInMinutes");
         }
     }
 
     private Dataset<Row> getAvgTipAmountGroupedByTripTime() {
         String statement = buildSqlStatement();
         return sparkSession.sql(statement)
-                .sort(functions.asc(TRIP_TIME_IN_SECONDS_COLUMN));
+                .sort(functions.asc("minutes"));
     }
 
     private String buildSqlStatement() {
-        return "SELECT "
+        return "WITH newTrips as (SELECT CEIL(("
                 .concat(TRIP_TIME_IN_SECONDS_COLUMN)
-                .concat(", AVG(")
+                .concat(") / 150) as minuteIntervall, ")
                 .concat(TIP_AMOUNT_COLUMN)
-                .concat(") as avgTipAmountInDollars FROM ")
+                .concat(" FROM ")
                 .concat(TRIPS_TABLE)
+                .concat(" WHERE ")
+                .concat(TRIP_TIME_IN_SECONDS_COLUMN)
+                .concat(" BETWEEN 1 AND 4200)")
+                .concat(" SELECT ")
+                .concat("(minuteIntervall * 2.5) as minutes, AVG(")
+                .concat(TIP_AMOUNT_COLUMN)
+                .concat(") as avgTipAmount")
+                .concat(" FROM ")
+                .concat("newTrips")
                 .concat(" GROUP BY ")
-                .concat(TRIP_TIME_IN_SECONDS_COLUMN);
+                .concat("minutes");
     }
 
     // WITH newTrips as (SELECT CEIL((tripTimeInSeconds) / 150) as minuteIntervall, tipAmount FROM trips WHERE tripTimeInSeconds BETWEEN 1 AND 4200)

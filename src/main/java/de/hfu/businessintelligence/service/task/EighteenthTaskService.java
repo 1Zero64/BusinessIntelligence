@@ -55,6 +55,9 @@ public class EighteenthTaskService implements TaskService {
                 .concat(PASSENGER_COUNT_COLUMN)
                 .concat(") as avgTotalAmountInDollarsPerPerson FROM ")
                 .concat(TRIPS_TABLE)
+                .concat(" WHERE ")
+                .concat(PASSENGER_COUNT_COLUMN)
+                .concat(" BETWEEN 1 AND 9")
                 .concat(" GROUP BY ")
                 .concat(PASSENGER_COUNT_COLUMN);
     }
