@@ -54,4 +54,7 @@ public class EighthTaskService implements TaskService {
                 .concat(" GROUP BY ")
                 .concat(TRIP_TIME_IN_SECONDS_COLUMN);
     }
+
+    // WITH newTrips as (SELECT CEIL((tripTimeInSeconds) / 150) as minuteIntervall, tipAmount FROM trips WHERE tripTimeInSeconds BETWEEN 1 AND 4200)
+    // SELECT (minuteIntervall * 2.5) as minutes, AVG(tipAmount) as avgTipAmount FROM newTrips GROUP BY minutes
 }

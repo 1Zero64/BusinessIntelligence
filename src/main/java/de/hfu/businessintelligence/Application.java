@@ -25,14 +25,13 @@ public class Application {
                 SixthTaskService.getInstance(spark),
                 SeventhTaskService.getInstance(spark),
                 EighthTaskService.getInstance(spark),
-                NinthTaskService.getInstance(spark),
+//                NinthTaskService.getInstance(spark),
                 TenthTaskService.getInstance(spark),
-                EleventhTaskService.getInstance(spark),
-                TwelfthTaskService.getInstance(spark),
-                ThirteenthTaskService.getInstance(spark),
-                FifteenthTaskService.getInstance(spark),
-                SixteenthTaskService.getInstance(spark),
-                SeventeenthTaskService.getInstance(spark),
+//                EleventhTaskService.getInstance(spark),
+//                TwelfthTaskService.getInstance(spark),
+//                ThirteenthTaskService.getInstance(spark),
+//                FifteenthTaskService.getInstance(spark),
+//                SixteenthTaskService.getInstance(spark),
                 EighteenthTaskService.getInstance(spark)
         );
         tasks.forEach(TaskService::executeTask);
