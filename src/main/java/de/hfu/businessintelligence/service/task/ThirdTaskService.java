@@ -59,7 +59,14 @@ public class ThirdTaskService implements TaskService {
                 .concat(String.valueOf(SECONDS_TO_HOURS))
                 .concat(")) as avgVelocityInKilometersPerHour FROM ")
                 .concat(TRIPS_TABLE)
-                .concat(" WHERE ")
-                .concat("avgVelocityInKilometersPerHour < 80");
+                .concat(" WHERE ((")
+                .concat(TRIP_DISTANCE_COLUMN)
+                .concat(" * ")
+                .concat(String.valueOf(MILES_TO_KILOMETERS))
+                .concat(") / (")
+                .concat(TRIP_TIME_IN_SECONDS_COLUMN)
+                .concat(" / ")
+                .concat(String.valueOf(SECONDS_TO_HOURS))
+                .concat(")) < 80");
     }
 }

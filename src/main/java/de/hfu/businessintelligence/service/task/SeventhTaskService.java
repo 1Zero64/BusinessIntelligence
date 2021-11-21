@@ -41,7 +41,7 @@ public class SeventhTaskService implements TaskService {
     private Dataset<Row> getAvgTipAmountGroupedByTripDistance() {
         String statement = buildSqlStatement();
         return sparkSession.sql(statement)
-                .sort(functions.asc("tripDistanceInKilometers"));
+                .sort(functions.asc("tripDistanceIntervalInKilometers"));
     }
 
     private String buildSqlStatement() {
