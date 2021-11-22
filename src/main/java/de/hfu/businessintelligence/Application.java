@@ -18,20 +18,20 @@ public class Application {
 
         List<TaskService> tasks = List.of(
                 FirstTaskService.getInstance(spark),
-//              SecondTaskService.getInstance(spark),
+                SecondTaskService.getInstance(spark),
                 ThirdTaskService.getInstance(spark),
                 FourthTaskService.getInstance(spark),
-//                FifthTaskService.getInstance(spark),
-//                SixthTaskService.getInstance(spark),
+                FifthTaskService.getInstance(spark),
+                SixthTaskService.getInstance(spark),
                 SeventhTaskService.getInstance(spark),
                 EighthTaskService.getInstance(spark),
-//                NinthTaskService.getInstance(spark),
+                NinthTaskService.getInstance(spark),
                 TenthTaskService.getInstance(spark),
-//                EleventhTaskService.getInstance(spark),
-//                TwelfthTaskService.getInstance(spark),
-//                ThirteenthTaskService.getInstance(spark),
-//                FifteenthTaskService.getInstance(spark),
-//                SixteenthTaskService.getInstance(spark),
+                EleventhTaskService.getInstance(spark),
+                TwelfthTaskService.getInstance(spark),
+                ThirteenthTaskService.getInstance(spark),
+                FifteenthTaskService.getInstance(spark),
+                SixteenthTaskService.getInstance(spark),
                 EighteenthTaskService.getInstance(spark)
         );
         tasks.forEach(TaskService::executeTask);

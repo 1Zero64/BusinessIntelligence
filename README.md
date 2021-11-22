@@ -76,112 +76,25 @@ Wie viel verdienen Taxis pro fahrt, wenn sie nur 30km bzw. 50km pro Fahrt fahren
 im Vergleich zu Taxis die keine Begrenzung haben? (D.h. was sind die durchschnittlichen
 Einnahmen mit Fahrten <30km bzw. <50km im Vergleich zu den Gesamteinnahmen?).
 
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q2
+## de.hfu.business.augaben.aufgaben.aufgabe01.Q2
 Finden Sie heraus, ob mehr Taxifahrten im Norden oder im Süden gestartet werden.
-
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
 
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q3
 Gib mir Informationen über die Durchschnittsgeschwindigkeit des Verkehrs in
 New York.
 
-## Umsetzung
-WIP
-
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q4
 Ermittle den durchschnittlichen Tagesverlauf der durchschnittlichen
 Verkehrsgeschwindigkeit in New York.
 
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q5
 Ermittle den durchschnittlichen Tagesverlauf des durchschnittlichen Verkehrsvolumens (gemessen an Taxifahrten) in New York.
-
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
 
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q6
 Ermittle ob und wie das Trinkgeld von der Uhrzeit abhängt.
 
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q7
 Ermittle ob und wie das Trinkgeld von der Fahrtdistanz abhängt.
 
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
 ## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q8
 Ermittle ob und wie das Trinkgeld von der Fahrtdauer abhängt.
-
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
-
-## Q9
-WIP
-
-## Umsetzung
-WIP
-
-### Input
-WIP
-
-### Output
-WIP
