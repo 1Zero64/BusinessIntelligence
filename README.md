@@ -1,12 +1,20 @@
 # Business Intelligence
 
 ## Team
-Artur Erfurt\
-Patrick Jäckle\
-Nicolas Mahn\
-Kevin Hilzinger\
-Jan-Hendrik Hauser\
-Niko Kauz
+- Artur Erfurt
+- Patrick Jäckle
+- Nicolas Mahn
+- Kevin Hilzinger
+- Jan-Hendrik Hauser
+- Niko Kauz
+
+**Studenten der Hochschule Furtwangen, Fakultät Wirtschaftsinformatik**
+
+## Das Repository
+In diesem Repository werden die Aufgaben aus der und für die BI Vorlesung implementiert und umgesetzt. Das Repo bleibt öffentlich, sodass die Interessenten
+hier jederzeit reinschauen können.
+
+Link zum Repository: https://github.com/1Zero64/BusinessIntelligence
 
 ## Skills of a Data Scientist
 ![img.png](images/SkillsOfADataScientist.png)
@@ -71,30 +79,32 @@ Spark, Scala und Java
 umzusetzen.
 - Die Berechnungen sollen nach Möglichkeit in Spark umgesetzt werden.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q1
+**Wahl der Werkzeuge: Java, Spark und Spark SQL**
+
+## Q1
 Wie viel verdienen Taxis pro fahrt, wenn sie nur 30km bzw. 50km pro Fahrt fahren können,
 im Vergleich zu Taxis die keine Begrenzung haben? (D.h. was sind die durchschnittlichen
 Einnahmen mit Fahrten <30km bzw. <50km im Vergleich zu den Gesamteinnahmen?).
 
-## de.hfu.business.augaben.aufgaben.aufgabe01.Q2
+## Q2
 Finden Sie heraus, ob mehr Taxifahrten im Norden oder im Süden gestartet werden.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q3
+## Q3
 Gib mir Informationen über die Durchschnittsgeschwindigkeit des Verkehrs in
 New York.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q4
+## Q4
 Ermittle den durchschnittlichen Tagesverlauf der durchschnittlichen
 Verkehrsgeschwindigkeit in New York.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q5
+## Q5
 Ermittle den durchschnittlichen Tagesverlauf des durchschnittlichen Verkehrsvolumens (gemessen an Taxifahrten) in New York.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q6
+## Q6
 Ermittle ob und wie das Trinkgeld von der Uhrzeit abhängt.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q7
+## Q7
 Ermittle ob und wie das Trinkgeld von der Fahrtdistanz abhängt.
 
-## de.hfu.business.aufgaben.aufgaben.aufgabe01.Q8
+## Q8
 Ermittle ob und wie das Trinkgeld von der Fahrtdauer abhängt.
